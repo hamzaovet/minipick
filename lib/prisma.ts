@@ -9,7 +9,7 @@ function getPool(): Pool {
   if (!globalForPrisma.pool) {
     const rawUrl =
       process.env.DATABASE_URL ||
-      "postgresql://neondb_owner:npg_KynD7uAa6vZr@ep-muddy-math-b9j80lh8-pooler.c-7.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
+      "postgresql://neondb_owner:npg_9rXC3GEyFUKx@ep-dry-recipe-baxh40lf-pooler.c-8.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
 
     globalForPrisma.pool = new Pool({
       connectionString: rawUrl,

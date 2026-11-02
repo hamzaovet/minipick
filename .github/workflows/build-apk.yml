@@ -1,9 +1,10 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ "main", "master" ]
   workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -49,7 +50,6 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ls -la gradlew
 
       - name: Build Android Debug APK
         run: |
@@ -60,7 +60,6 @@ jobs:
           cp android/app/build/outputs/apk/debug/app-debug.apk dist-apk/minipick.apk
           mkdir -p public/downloads
           cp dist-apk/minipick.apk public/downloads/minipick.apk
-          ls -lh dist-apk/minipick.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
@@ -71,15 +70,13 @@ jobs:
 
       - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         with:
-          tag_name: v1.0.0
-          name: "ميني بيك — تطبيق الأندرويد الرسمي v1.0.0"
+          name: "ميني بيك — تطبيق الأندرويد الرسمي"
           draft: false
           prerelease: false
           make_latest: true
           body: |
-            ## 🌸 تطبيق ميني بيك (Mini Pick) الرسمي للأندرويد v1.0.0
+            ## 🌸 تطبيق ميني بيك (Mini Pick) الرسمي للأندرويد
             
             أهلاً بكم في تطبيق **ميني بيك (Mini Pick) — بوتيك الألعاب التركيبية والهدايا الترند** الرسمي للأندرويد!
             
@@ -96,12 +93,3 @@ jobs:
           files: dist-apk/minipick.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Commit and Push APK to Repo
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/downloads/minipick.apk
-          git commit -m "chore(release): host genuine compiled Mini Pick APK [skip ci]" || echo "No changes"
-          git push origin main || true
