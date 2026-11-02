@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">روفي ستور</string>
+    <string name="title_activity_main">روفي ستور</string>
+    <string name="package_name">com.rovystore.app</string>
+    <string name="custom_url_scheme">com.rovystore.app</string>
+</resources>
