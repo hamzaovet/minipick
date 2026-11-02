@@ -30,35 +30,43 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Install Node Dependencies
-        run: npm install --legacy-peer-deps
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Sync Capacitor Android
-        run: |
-          rm -f public/downloads/*.apk
-          npx cap sync android
+      - name: Install NPM Dependencies
+        run: npm ci
 
-      - name: Make Gradlew Executable
-        run: chmod +x ./android/gradlew
+      - name: Generate Prisma Client
+        run: npx prisma generate
 
-      - name: Build Debug APK & Prepare Asset
-        env:
-          ANDROID_HOME: /usr/local/lib/android/sdk
+      - name: Build Next.js Static Export for Capacitor
+        run: npm run build
+
+      - name: Capacitor Sync
+        run: npx cap sync android
+
+      - name: Grant Execute Permission for Gradlew
         run: |
           cd android
-          ./gradlew :app:assembleDebug --stacktrace 2>&1 | tee ../gradle-build.log
+          chmod +x gradlew
+          ls -la gradlew
+
+      - name: Build Android Debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug --no-daemon --stacktrace
           cd ..
           mkdir -p dist-apk
-          cp android/app/build/outputs/apk/debug/app-debug.apk dist-apk/rovy-store.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist-apk/minipick.apk
           mkdir -p public/downloads
-          cp dist-apk/rovy-store.apk public/downloads/rovy-store.apk
-          ls -lh dist-apk/rovy-store.apk
+          cp dist-apk/minipick.apk public/downloads/minipick.apk
+          ls -lh dist-apk/minipick.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: rovy-store-apk
-          path: dist-apk/rovy-store.apk
+          name: minipick-apk
+          path: dist-apk/minipick.apk
           if-no-files-found: error
 
       - name: Create or Update GitHub Release
@@ -66,26 +74,26 @@ jobs:
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         with:
           tag_name: v1.0.0
-          name: "روفي ستور — تطبيق الأندرويد الرسمي v1.0.0"
+          name: "ميني بيك — تطبيق الأندرويد الرسمي v1.0.0"
           draft: false
           prerelease: false
           make_latest: true
           body: |
-            ## 💎 تطبيق روفي ستور (Rovy Store) الرسمي للأندرويد v1.0.0
+            ## 🌸 تطبيق ميني بيك (Mini Pick) الرسمي للأندرويد v1.0.0
             
-            أهلاً بكم في تطبيق **روفي ستور (Rovy Store) — بوتيك العطور الفاخرة** الرسمي للأندرويد!
+            أهلاً بكم في تطبيق **ميني بيك (Mini Pick) — بوتيك الألعاب التركيبية والهدايا الترند** الرسمي للأندرويد!
             
             ### 🔥 مميزات التطبيق:
-            - تصفح كتالوج أفخم العطور العالمية والأصلية وتشكيلة الشتاء الفاخرة.
-            - تفاصيل الهرم العطري والمكونات والبراند ودرجة الأصالة (أصلي / تيستر / ماستر كوبي).
-            - طلب فوري وسريع بلمسة واحدة والدفع عند الاستلام مع ميزة التجربة قبل الدفع.
-            - إشعارات فورية عند وصول أندر الإصدارات والخصومات الحصرية.
+            - تصفح كتالوج مكعبات النانو، أطقم البيدازلنج، منظمات المكتب والميك أب الكيوت.
+            - معاينة تفاصيل ومحتويات كل بوكس، عدد القطع، وصعوبة التركيب.
+            - طلب فوري وسريع بلمسة واحدة والدفع عند الاستلام مع ميزة المعاينة قبل الدفع.
+            - شحن سريع لطنطا وكافة محافظات مصر.
             
             ### 📥 طريقة التثبيت:
-            1. اضغط على رابط التحميل بالأسفل `rovy-store.apk`.
+            1. اضغط على رابط التحميل بالأسفل `minipick.apk`.
             2. افتح الملف واضغط **تثبيت (Install)**.
-            3. التطبيق مستقل ومخصص لمتجر روفي ستور (`com.rovystore.app`).
-          files: dist-apk/rovy-store.apk
+            3. التطبيق مستقل ومخصص لمتجر ميني بيك (`com.minipick.app`).
+          files: dist-apk/minipick.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -94,6 +102,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/downloads/rovy-store.apk
-          git commit -m "chore(release): host genuine compiled Rovy Store APK [skip ci]" || echo "No changes"
+          git add public/downloads/minipick.apk
+          git commit -m "chore(release): host genuine compiled Mini Pick APK [skip ci]" || echo "No changes"
           git push origin main || true

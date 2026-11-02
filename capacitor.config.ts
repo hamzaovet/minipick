@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.rovystore.app",
+  appId: "com.minipick.app",
   appName: "ميني بيك",
   webDir: "public",
   server: {
@@ -10,7 +10,7 @@ const config: CapacitorConfig = {
   },
   android: {
     allowMixedContent: true,
-    backgroundColor: "#07060a",
+    backgroundColor: "#0d0914",
   },
 };
 
