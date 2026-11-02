@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack --port 3095",
-    "build": "next build --webpack",
+    "build": "npx prisma generate && next build --webpack",
     "start": "next start --port 3095",
-    "postinstall": "prisma generate",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
+    "postinstall": "npx prisma generate || true",
+    "db:generate": "npx prisma generate",
+    "db:push": "npx prisma db push",
     "db:seed": "npx tsx scripts/seed-minipick.ts"
   },
   "dependencies": {
