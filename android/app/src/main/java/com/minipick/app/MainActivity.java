@@ -1,4 +1,4 @@
-package com.rovystore.app;
+package com.minipick.app;
 
 import com.getcapacitor.BridgeActivity;
 

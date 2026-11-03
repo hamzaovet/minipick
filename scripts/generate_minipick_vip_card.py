@@ -10,8 +10,8 @@ public_dir = os.path.join(base_dir, "public")
 artifact_dir = r"C:\Users\Dr Princa\.gemini\antigravity\brain\2d9d53fe-6b03-4ac8-8878-725378cea44d"
 
 # 1. Generate QR codes
-web_url = "https://minipick.vercel.app"
-apk_url = "https://minipick.vercel.app/downloads/minipick.apk"
+web_url = "https://minipick-mmax.vercel.app"
+apk_url = "https://minipick-mmax.vercel.app/api/download/apk"
 
 qr_web = qrcode.QRCode(
     version=None,

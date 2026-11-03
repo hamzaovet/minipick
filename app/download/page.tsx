@@ -25,12 +25,7 @@ export default function DownloadAppPage() {
 
   const handleDownload = () => {
     setDownloading(true);
-    const link = document.createElement("a");
-    link.href = "/downloads/minipick.apk";
-    link.setAttribute("download", "minipick.apk");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    window.location.href = "/api/download/apk";
     setTimeout(() => setDownloading(false), 3000);
   };
 

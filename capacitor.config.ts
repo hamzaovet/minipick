@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: "ميني بيك",
   webDir: "public",
   server: {
-    url: "https://minipick.vercel.app",
+    url: "https://minipick-mmax.vercel.app",
     cleartext: true,
   },
   android: {

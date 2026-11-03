@@ -197,7 +197,7 @@ async function main() {
       longevityEn: "Permanent Everlasting Keepsake",
       sillageAr: "حجم ميني أنيق ومناسب للمكتب والرف",
       sillageEn: "Compact 26cm Desktop Size",
-      image: "https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/nano-flower-bouquet.jpg",
       categoryId: "cat_nano",
     },
     {
@@ -237,7 +237,7 @@ async function main() {
       longevityEn: "Lifetime mechanical durability",
       sillageAr: "صوت ميكانيكي عذب ومريح للأعصاب",
       sillageEn: "Soothing acoustic chimes",
-      image: "https://images.unsplash.com/photo-1520523839898-507127025f38?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/piano-nano-blocks.jpg",
       categoryId: "cat_nano",
     },
     {
@@ -277,7 +277,7 @@ async function main() {
       longevityEn: "Multi-year LED lifespan",
       sillageAr: "إضاءة ناعمة رومانسية مهدئة",
       sillageEn: "Ambient relaxing night glow",
-      image: "https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/sakura-treehouse.jpg",
       categoryId: "cat_nano",
     },
     {
@@ -317,7 +317,7 @@ async function main() {
       longevityEn: "Waterproof durable gem bond",
       sillageAr: "بريق كريستالي يخطف الأنظار",
       sillageEn: "Diamond-like prism shimmer",
-      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/bedazzle-crystal-pen.png",
       categoryId: "cat_bedazzle",
     },
     {
@@ -357,7 +357,7 @@ async function main() {
       longevityEn: "Long-lasting surface grip",
       sillageAr: "لمعان جذاب في الإضاءة والشمس",
       sillageEn: "Eye-catching sparkle in light",
-      image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/rhinestone-sticker-sheets.png",
       categoryId: "cat_bedazzle",
     },
     {
@@ -397,7 +397,7 @@ async function main() {
       longevityEn: "Multi-year durable structure",
       sillageAr: "لون بينك باستيل يريح العين",
       sillageEn: "Soft pastel blush aesthetic",
-      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/desk-makeup-organizer.png",
       categoryId: "cat_organizers",
     },
     {
@@ -437,7 +437,7 @@ async function main() {
       longevityEn: "Scratch-resistant & easy to wipe",
       sillageAr: "تصميم تريند فاخر على التسريحة",
       sillageEn: "Vanity tabletop statement piece",
-      image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/brush-holder-rotating.jpg",
       categoryId: "cat_organizers",
     },
     {
@@ -477,7 +477,7 @@ async function main() {
       longevityEn: "Ultra-portable purse & backpack fit",
       sillageAr: "تجربة تلوين دافئة ومبهجة",
       sillageEn: "Mindful relaxing creative therapy",
-      image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/pocket-coloring-book-markers.png",
       categoryId: "cat_coloring",
     },
     {
@@ -517,7 +517,7 @@ async function main() {
       longevityEn: "Long stickiness on all smooth surfaces",
       sillageAr: "أشكال تجذب الابتسامة فوراً",
       sillageEn: "Instant kawaii mood booster",
-      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/3d-stickers-collection.png",
       categoryId: "cat_coloring",
     },
     {
@@ -557,7 +557,7 @@ async function main() {
       longevityEn: "Collectible display heirloom",
       sillageAr: "حماس وتشويق فتح الصندوق",
       sillageEn: "Unboxing thrill & sheer delight",
-      image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/blind-box-mystery.png",
       categoryId: "cat_gifts",
     },
     {
@@ -597,7 +597,7 @@ async function main() {
       longevityEn: "Multi-year thermal print durability",
       sillageAr: "حجم صغير جداً يدخل في الجيب",
       sillageEn: "Ultra-compact pocket fit",
-      image: "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/pink-thermal-printer.jpg",
       categoryId: "cat_gifts",
     },
     {
@@ -637,7 +637,7 @@ async function main() {
       longevityEn: "Re-usable keepsake jewelry box",
       sillageAr: "فخامة تترك انطباعاً ساحراً لا يُنسى",
       sillageEn: "Unforgettable first impression",
-      image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80",
+      image: "/images/products/luxury-gift-box.png",
       categoryId: "cat_gifts",
     },
   ];

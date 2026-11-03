@@ -28,8 +28,8 @@ export default function VipCardPage() {
   const isAr = lang === "ar";
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const webUrl = "https://minipick.vercel.app";
-  const apkUrl = "https://minipick.vercel.app/downloads/minipick.apk";
+  const webUrl = "https://minipick-mmax.vercel.app";
+  const apkUrl = "https://minipick-mmax.vercel.app/api/download/apk";
   const mapsUrl = settings.googleMapsUrl || "https://maps.google.com/?q=Tanta,Gharbia,Egypt";
   const facebookUrl = "https://www.facebook.com/profile.php?id=61576070394476";
 

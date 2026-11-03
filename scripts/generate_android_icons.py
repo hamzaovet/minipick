@@ -1,88 +1,85 @@
 import os
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
-def generate_icons():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    app_icon_path = os.path.join(base_dir, 'public', 'app-icon.png')
+res_dir = r"d:\Work\minipick\android\app\src\main\res"
+
+sizes = {
+    "mipmap-mdpi": (48, 48),
+    "mipmap-hdpi": (72, 72),
+    "mipmap-xhdpi": (96, 96),
+    "mipmap-xxhdpi": (144, 144),
+    "mipmap-xxxhdpi": (192, 192),
+}
+
+# Base high-res 512x512 icon
+base_size = 512
+img = Image.new("RGBA", (base_size, base_size), (0, 0, 0, 0))
+draw = ImageDraw.Draw(img)
+
+# Background gradient / rounded box
+for y in range(base_size):
+    # Pink gradient from #ff6b8b to #ffa8be
+    r = int(255 - (y / base_size) * 10)
+    g = int(107 + (y / base_size) * 60)
+    b = int(139 + (y / base_size) * 55)
+    draw.line([(0, y), (base_size, y)], fill=(r, g, b, 255))
+
+# Mask rounded corners
+mask = Image.new("L", (base_size, base_size), 0)
+mask_draw = ImageDraw.Draw(mask)
+mask_draw.rounded_rectangle([(10, 10), (base_size - 10, base_size - 10)], radius=110, fill=255)
+
+# Inner border
+icon_bg = Image.new("RGBA", (base_size, base_size), (0, 0, 0, 0))
+icon_bg.paste(img, (0, 0), mask=mask)
+draw_final = ImageDraw.Draw(icon_bg)
+
+draw_final.rounded_rectangle([(14, 14), (base_size - 14, base_size - 14)], radius=105, outline=(255, 255, 255, 180), width=6)
+
+# Cute decorative circles / pearl dots
+for i in range(12):
+    angle_rad = i * (3.14159 * 2 / 12)
+    cx = int(256 + 180 * 0.9 * 0.9 * (1 if i % 2 == 0 else 0.85))
+
+# Draw "MP" & Sparkles
+try:
+    font_large = ImageFont.truetype("arialbd.ttf", 180)
+    font_sub = ImageFont.truetype("arialbd.ttf", 44)
+except:
+    font_large = ImageFont.load_default()
+    font_sub = ImageFont.load_default()
+
+# White text with subtle drop shadow
+draw_final.text((258, 218), "MP", fill=(180, 50, 80, 120), font=font_large, anchor="mm")
+draw_final.text((256, 216), "MP", fill=(255, 255, 255, 255), font=font_large, anchor="mm")
+
+draw_final.text((257, 345), "MINI PICK", fill=(180, 50, 80, 100), font=font_sub, anchor="mm")
+draw_final.text((256, 344), "MINI PICK", fill=(255, 245, 248, 255), font=font_sub, anchor="mm")
+
+# Sparkles
+draw_final.text((140, 140), "✨", fill=(255, 255, 255, 255), font=font_sub, anchor="mm")
+draw_final.text((370, 130), "✨", fill=(255, 255, 255, 255), font=font_sub, anchor="mm")
+
+# Save high-res icon in public
+icon_bg.save(r"d:\Work\minipick\public\app-icon.png")
+
+# Generate all mipmap densities
+for folder, size in sizes.items():
+    f_path = os.path.join(res_dir, folder)
+    os.makedirs(f_path, exist_ok=True)
     
-    print(f"Using source icon: {app_icon_path}")
-    base_img = Image.open(app_icon_path).convert('RGBA')
+    # Square icon
+    resized = icon_bg.resize(size, Image.Resampling.LANCZOS)
+    resized.save(os.path.join(f_path, "ic_launcher.png"))
+    resized.save(os.path.join(f_path, "ic_launcher_foreground.png"))
     
-    # Target mipmap sizes:
-    sizes = [
-        ('mipmap-mdpi', 48, 108),
-        ('mipmap-hdpi', 72, 162),
-        ('mipmap-xhdpi', 96, 216),
-        ('mipmap-xxhdpi', 144, 324),
-        ('mipmap-xxxhdpi', 192, 432),
-    ]
+    # Round icon
+    round_mask = Image.new("L", size, 0)
+    round_draw = ImageDraw.Draw(round_mask)
+    round_draw.ellipse([(0, 0), size], fill=255)
     
-    res_dir = os.path.join(base_dir, 'android', 'app', 'src', 'main', 'res')
-    
-    # Prepare Round Mask
-    def make_round(img):
-        w, h = img.size
-        mask = Image.new('L', (w, h), 0)
-        draw = ImageDraw.Draw(mask)
-        draw.ellipse((0, 0, w - 1, h - 1), fill=255)
-        output = img.copy()
-        output.putalpha(mask)
-        return output
+    round_img = Image.new("RGBA", size, (0, 0, 0, 0))
+    round_img.paste(resized, (0, 0), mask=round_mask)
+    round_img.save(os.path.join(f_path, "ic_launcher_round.png"))
 
-    round_master = make_round(base_img.resize((512, 512), Image.Resampling.LANCZOS))
-
-    for folder, size, fg_size in sizes:
-        target_dir = os.path.join(res_dir, folder)
-        os.makedirs(target_dir, exist_ok=True)
-        
-        # ic_launcher.png
-        launcher_sq = base_img.resize((size, size), Image.Resampling.LANCZOS)
-        launcher_sq.save(os.path.join(target_dir, 'ic_launcher.png'), 'PNG')
-        
-        # ic_launcher_round.png
-        launcher_rd = round_master.resize((size, size), Image.Resampling.LANCZOS)
-        launcher_rd.save(os.path.join(target_dir, 'ic_launcher_round.png'), 'PNG')
-        
-        # ic_launcher_foreground.png
-        fg_canvas = Image.new('RGBA', (fg_size, fg_size), (0, 0, 0, 0))
-        fg_inner_size = int(fg_size * 0.72)
-        fg_inner = base_img.resize((fg_inner_size, fg_inner_size), Image.Resampling.LANCZOS)
-        offset = (fg_size - fg_inner_size) // 2
-        fg_canvas.paste(fg_inner, (offset, offset), fg_inner)
-        fg_canvas.save(os.path.join(target_dir, 'ic_launcher_foreground.png'), 'PNG')
-        print(f"Generated {folder}: {size}x{size}, fg: {fg_size}x{fg_size}")
-
-    # 2. Splash Screens
-    bg_color = (7, 6, 10, 255) # #07060a
-    splash_targets = [
-        ('drawable', 480, 800),
-        ('drawable-port-mdpi', 320, 480),
-        ('drawable-port-hdpi', 480, 800),
-        ('drawable-port-xhdpi', 720, 1280),
-        ('drawable-port-xxhdpi', 960, 1600),
-        ('drawable-port-xxxhdpi', 1280, 1920),
-        ('drawable-land-mdpi', 480, 320),
-        ('drawable-land-hdpi', 800, 480),
-        ('drawable-land-xhdpi', 1280, 720),
-        ('drawable-land-xxhdpi', 1600, 960),
-        ('drawable-land-xxxhdpi', 1920, 1280),
-    ]
-
-    for folder, width, height in splash_targets:
-        target_dir = os.path.join(res_dir, folder)
-        os.makedirs(target_dir, exist_ok=True)
-        splash_img = Image.new('RGBA', (width, height), bg_color)
-        
-        logo_dim = int(min(width, height) * 0.45)
-        logo_resized = base_img.resize((logo_dim, logo_dim), Image.Resampling.LANCZOS)
-        offset_x = (width - logo_dim) // 2
-        offset_y = (height - logo_dim) // 2
-        splash_img.paste(logo_resized, (offset_x, offset_y), logo_resized)
-        
-        splash_img.convert('RGB').save(os.path.join(target_dir, 'splash.png'), 'PNG')
-        print(f"Generated splash for {folder}: {width}x{height}")
-
-    print("All Rovy Store Android icons & splash screens generated successfully!")
-
-if __name__ == '__main__':
-    generate_icons()
+print("Mini Pick Pink Android icons generated successfully!")

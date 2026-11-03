@@ -3,6 +3,8 @@ name: Build Android APK
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
 
@@ -11,11 +13,11 @@ permissions:
 
 jobs:
   build:
-    name: Build & Release APK
+    name: Build & Release Mini Pick APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -35,15 +37,9 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install NPM Dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Build Next.js Static Export for Capacitor
-        run: npm run build
-
-      - name: Capacitor Sync
+      - name: Sync Capacitor Android
         run: npx cap sync android
 
       - name: Grant Execute Permission for Gradlew
@@ -71,6 +67,7 @@ jobs:
       - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: "v1.0.0"
           name: "ميني بيك — تطبيق الأندرويد الرسمي"
           draft: false
           prerelease: false
