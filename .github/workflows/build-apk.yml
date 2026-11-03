@@ -13,11 +13,11 @@ permissions:
 
 jobs:
   build:
-    name: Build & Release Mini Pick APK
+    name: Build & Release APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -33,21 +33,18 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install NPM Dependencies
+      - name: Install Node Dependencies
         run: npm install --legacy-peer-deps
 
       - name: Sync Capacitor Android
         run: npx cap sync android
 
-      - name: Grant Execute Permission for Gradlew
+      - name: Make Gradlew Executable
         run: |
           cd android
           chmod +x gradlew
 
-      - name: Build Android Debug APK
+      - name: Build Debug APK & Prepare Asset
         run: |
           cd android
           ./gradlew assembleDebug --no-daemon --stacktrace
@@ -88,5 +85,15 @@ jobs:
             2. افتح الملف واضغط **تثبيت (Install)**.
             3. التطبيق مستقل ومخصص لمتجر ميني بيك (`com.minipick.app`).
           files: dist-apk/minipick.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and Push APK to Repo
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/downloads/minipick.apk
+          git commit -m "chore(apk): update official minipick.apk build [skip ci]" || echo "No changes"
+          git push origin main || echo "Push skipped"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
